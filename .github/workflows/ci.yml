@@ -1,11 +1,15 @@
-
-name: My First CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   test:
@@ -22,3 +26,30 @@ jobs:
 
       - name: Run tests
         run: python test_app.py
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website files
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+        
