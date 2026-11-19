@@ -28,6 +28,11 @@ jobs:
       - name: Check Python syntax
         run: python -m py_compile lambda/lambda_function.py
 
+      
+      - name: Run Lambda unit tests
+        run: python -m unittest discover -s lambda -p "test_*.py" -v
+  
+
      
       - name: Debug OIDC claims
         uses: actions/github-script@v7
