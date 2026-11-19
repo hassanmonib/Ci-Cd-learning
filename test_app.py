@@ -7,4 +7,4 @@ def test_homepage():
 
 if __name__ == "__main__":
     test_homepage()
-    print("Test passed!")
+    print("Test passed!!!")
