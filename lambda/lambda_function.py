@@ -6,6 +6,9 @@ from urllib.parse import unquote_plus
 
 s3 = boto3.client("s3")
 
+def calculate_bonus(salary):
+    return int(salary * 0.10)
+
 def lambda_handler(event, context):
     print("Lambda function started!")
 
@@ -30,7 +33,7 @@ def lambda_handler(event, context):
         # TRANSFORM: Add annual bonus (10% of salary)
         for employee in employees:
             salary = int(employee["salary"])
-            employee["annual_bonus"] = int(salary * 0.10)
+            employee["annual_bonus"] = calculate_bonus(salary)
 
         # LOAD: Convert processed records back into CSV
         output = io.StringIO()
